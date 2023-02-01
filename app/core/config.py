@@ -1,7 +1,15 @@
 import secrets
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
+from typing import Dict
+from typing import List
+from typing import Optional
+from typing import Union
 
-from pydantic import AnyHttpUrl, BaseSettings, HttpUrl, PostgresDsn, validator, EmailStr
+from pydantic import AnyHttpUrl
+from pydantic import BaseSettings
+from pydantic import EmailStr
+from pydantic import PostgresDsn
+from pydantic import validator
 
 
 class Settings(BaseSettings):
@@ -46,7 +54,7 @@ class Settings(BaseSettings):
 
     class Config:
         case_sensitive = True
-        env_file = '.env'
+        env_file = ".env"
 
 
 settings = Settings()

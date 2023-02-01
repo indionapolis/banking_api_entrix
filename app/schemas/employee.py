@@ -1,7 +1,7 @@
 from typing import Optional
 
-from fastapi import Form
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
+from pydantic import EmailStr
 
 
 class EmployeeBase(BaseModel):
@@ -24,18 +24,3 @@ class EmployeeInDBBase(EmployeeBase):
 # Additional properties to return via API
 class Employee(EmployeeInDBBase):
     pass
-
-
-class LoginForm:
-    """
-    username: employee email string.
-    password: password string.
-    """
-
-    def __init__(
-            self,
-            email: str = Form(..., description="employee email"),
-            password: str = Form(..., description="employee password")
-    ):
-        self.email = email
-        self.password = password

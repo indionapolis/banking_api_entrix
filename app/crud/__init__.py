@@ -1,10 +1,9 @@
-# from .crud_item import item
-# from .crud_user import user
+from ..models import Account
+from ..models import Customer
+from ..models import History
+from .base import CRUDBase
 from .crud_employee import employee
-# For a new basic set of CRUD operations you could just do
 
-# from .base import CRUDBase
-# from app.models.item import Item
-# from app.schemas.item import ItemCreate, ItemUpdate
-
-# item = CRUDBase[Item, ItemCreate, ItemUpdate](Item)
+account = CRUDBase[Account, Account, Account](Account)
+customer = CRUDBase[Customer, Customer, Customer](Customer)
+history = CRUDBase[History, History, History](History)
