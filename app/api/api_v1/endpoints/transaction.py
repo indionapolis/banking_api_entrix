@@ -9,7 +9,6 @@ from sqlalchemy.orm import Session
 from app import crud
 from app import schemas
 from app.api import deps
-from app.models import Account
 from app.models import History
 
 router = APIRouter()
@@ -36,8 +35,8 @@ router = APIRouter()
 def make_new_transaction(
     transaction: schemas.Transaction, db: Session = Depends(deps.get_db)
 ) -> Any:
-    from_account: Account = crud.account.get(db, transaction.from_account_id)
-    to_account: Account = crud.account.get(db, transaction.to_account_id)
+    from_account = crud.account.get(db, transaction.from_account_id)
+    to_account = crud.account.get(db, transaction.to_account_id)
 
     if from_account.balance < transaction.amount:
         raise HTTPException(

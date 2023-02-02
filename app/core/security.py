@@ -20,7 +20,7 @@ ALGORITHM = "HS256"
 
 
 def create_access_token(
-    subject: Union[str, Any], expires_delta: timedelta = None
+    subject: Union[str, Any], expires_delta: Optional[timedelta] = None
 ) -> str:
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
@@ -61,7 +61,7 @@ class JWTBearer(HTTPBearer):
         super(JWTBearer, self).__init__(auto_error=auto_error)
 
     async def __call__(self, request: Request) -> schemas.TokenPayload:
-        credentials: HTTPAuthorizationCredentials = await super(
+        credentials: Optional[HTTPAuthorizationCredentials] = await super(
             JWTBearer, self
         ).__call__(request)
         if credentials:
@@ -80,7 +80,6 @@ class JWTBearer(HTTPBearer):
 
     @staticmethod
     def decode_jwt(token: str) -> Optional[schemas.TokenPayload]:
-
         try:
             payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
             token_data = schemas.TokenPayload(**payload)

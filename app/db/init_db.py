@@ -7,7 +7,7 @@ from app import schemas
 from app.core.config import settings
 from app.db import base  # noqa: F401
 from app.db.session import SessionLocal
-from app.schemas import Customer
+from app.schemas import InCustomer
 
 logger = logging.getLogger(__name__)
 
@@ -31,9 +31,7 @@ def init_db(db: Session) -> None:
         employee = crud.employee.create(db, obj_in=employee_in)  # noqa: F841
 
         for customer in ini_customers:
-            new_customer = crud.customer.create(
-                db, obj_in=Customer(full_name=customer["name"])
-            )
+            crud.customer.create(db, obj_in=InCustomer(full_name=customer["name"]))
 
         logger.info("Database populated with initial data.")
 

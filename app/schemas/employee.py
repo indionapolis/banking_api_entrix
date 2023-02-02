@@ -4,17 +4,17 @@ from pydantic import BaseModel
 from pydantic import EmailStr
 
 
-class EmployeeBase(BaseModel):
+class InEmployee(BaseModel):
     email: Optional[EmailStr] = None
     full_name: Optional[str] = None
 
 
-class EmployeeCreate(EmployeeBase):
+class EmployeeCreate(InEmployee):
     email: EmailStr
     password: str
 
 
-class EmployeeInDBBase(EmployeeBase):
+class EmployeeInDBBase(InEmployee):
     id: Optional[int] = None
 
     class Config:

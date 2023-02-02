@@ -1,4 +1,5 @@
 from typing import Generator
+from typing import Optional
 
 from fastapi import Depends
 from sqlalchemy.orm import Session
@@ -14,7 +15,7 @@ def get_db() -> Generator:
     db = SessionLocal()
     try:
         yield db
-    except:
+    except Exception:
         db.rollback()
         raise
     finally:
@@ -24,7 +25,7 @@ def get_db() -> Generator:
 def get_current_employee(
     db: Session = Depends(get_db),
     token_data: schemas.TokenPayload = Depends(JWTBearer()),
-) -> models.Employee:
+) -> Optional[models.Employee]:
     employee = crud.employee.get(db, id=token_data.sub)
 
     return employee

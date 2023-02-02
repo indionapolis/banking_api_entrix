@@ -1,7 +1,5 @@
 from fastapi import APIRouter
 from fastapi import Depends
-from fastapi import HTTPException
-from fastapi import status
 from fastapi_pagination import LimitOffsetPage
 from sqlalchemy.orm import Session
 
@@ -14,7 +12,7 @@ router = APIRouter()
 
 @router.post("/")
 def create_new_customer(
-    customer: schemas.Customer, db: Session = Depends(deps.get_db)
+    customer: schemas.InCustomer, db: Session = Depends(deps.get_db)
 ) -> schemas.CustomerOut:
     new_customer = crud.customer.create(db, obj_in=customer)
 
@@ -35,17 +33,13 @@ def get_particular_customer(
     customer_id: int, db: Session = Depends(deps.get_db)
 ) -> schemas.CustomerOut:
     customer = crud.customer.get(db, customer_id)
-    if not customer:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Customer not found!"
-        )
 
     return customer
 
 
 @router.put("/{customer_id}", responses=crud.customer.not_found_resp)
 def update_customer(
-    customer_id: int, customer: schemas.Customer, db: Session = Depends(deps.get_db)
+    customer_id: int, customer: schemas.InCustomer, db: Session = Depends(deps.get_db)
 ) -> schemas.CustomerOut:
     old_customer = crud.customer.get(db, customer_id)
 

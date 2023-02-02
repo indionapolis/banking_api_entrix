@@ -1,7 +1,6 @@
 from typing import Any
 from typing import Dict
 from typing import Generic
-from typing import Optional
 from typing import Type
 from typing import TypeVar
 from typing import Union
@@ -23,7 +22,7 @@ UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
 
 class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     @property
-    def not_found_resp(self):
+    def not_found_resp(self) -> dict:
         return {
             status.HTTP_404_NOT_FOUND: {
                 "description": "Item was not found",
@@ -48,7 +47,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         """
         self.model = model
 
-    def get(self, db: Session, id: Any) -> Optional[ModelType]:
+    def get(self, db: Session, id: Any) -> ModelType:
         obj = db.query(self.model).filter(self.model.id == id).first()
         if not obj:
             raise HTTPException(

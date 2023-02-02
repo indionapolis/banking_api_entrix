@@ -6,7 +6,7 @@ from pydantic import Field
 
 
 class HistoryOut(BaseModel):
-    amount: Decimal = Field(gt=0, decimal_places=2, example=0.01, default=0.01)
+    amount: Decimal = Field(gt=0, decimal_places=2, example=0.01)
 
     from_account_id: int
 

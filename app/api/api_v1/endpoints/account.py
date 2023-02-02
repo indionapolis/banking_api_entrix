@@ -12,7 +12,7 @@ router = APIRouter()
 
 @router.post("/", responses=crud.customer.not_found_resp)
 def create_new_account(
-    account: schemas.Account, db: Session = Depends(deps.get_db)
+    account: schemas.InAccount, db: Session = Depends(deps.get_db)
 ) -> schemas.AccountOut:
     crud.customer.get(db, account.customer_id)
     new_account = crud.account.create(db, obj_in=account)
@@ -20,7 +20,7 @@ def create_new_account(
     return new_account
 
 
-@router.get("/all", responses=crud.account.not_found_resp)
+@router.get("/all")
 def get_all_accounts(
     db: Session = Depends(deps.get_db),
 ) -> LimitOffsetPage[schemas.AccountOut]:

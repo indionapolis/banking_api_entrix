@@ -41,12 +41,27 @@ class Settings(BaseSettings):
     def assemble_db_connection(cls, v: Optional[str], values: Dict[str, Any]) -> Any:
         if isinstance(v, str):
             return v
+        return cls.build_bg_path(values, values.get("POSTGRES_DB"))
+
+    TEST_DATABASE_NAME: str
+    TEST_DATABASE_URI: Optional[PostgresDsn] = None
+
+    @validator("TEST_DATABASE_URI", pre=True)
+    def assemble_test_db_connection(
+        cls, v: Optional[str], values: Dict[str, Any]
+    ) -> Any:
+        if isinstance(v, str):
+            return v
+        return cls.build_bg_path(values, values.get("TEST_DATABASE_NAME"))
+
+    @staticmethod
+    def build_bg_path(values: Dict[str, Any], path: Any) -> Any:
         return PostgresDsn.build(
             scheme="postgresql",
             user=values.get("POSTGRES_USER"),
             password=values.get("POSTGRES_PASSWORD"),
             host=values.get("POSTGRES_SERVER"),
-            path=f"/{values.get('POSTGRES_DB') or ''}",
+            path=f"/{path or ''}",
         )
 
     FIRST_EMPLOYEE: EmailStr
