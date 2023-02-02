@@ -1,3 +1,4 @@
+from datetime import datetime
 from decimal import Decimal
 
 from pydantic import BaseModel
@@ -10,6 +11,8 @@ class HistoryOut(BaseModel):
     from_account_id: int
 
     to_account_id: int
+
+    timestamp: datetime
 
     class Config:
         orm_mode = True

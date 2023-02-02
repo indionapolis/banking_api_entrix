@@ -17,3 +17,17 @@ def get_all_history(
     history = crud.history.get_multi(db)
 
     return history
+
+
+@router.get("/customer/{customer_id}")
+def get_customer_history(
+    customer_id: int, db: Session = Depends(deps.get_db)
+) -> LimitOffsetPage[schemas.HistoryOut]:
+    return crud.history.filter_customer(db, customer_id)
+
+
+@router.get("/account/{account_id}")
+def get_account_history(
+    account_id: int, db: Session = Depends(deps.get_db)
+) -> LimitOffsetPage[schemas.HistoryOut]:
+    return crud.history.filter_account(db, account_id)

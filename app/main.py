@@ -4,12 +4,14 @@ from starlette.middleware.cors import CORSMiddleware
 
 from app.api.api_v1.api_router import api_router
 from app.core.config import settings
+from app.db.init_db import init
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
     description="Basic HTTP API for imaginary bank",
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     version="v1",
+    on_startup=[init],
 )
 
 # Set all CORS enabled origins
