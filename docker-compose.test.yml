@@ -1,28 +1,25 @@
 version: "3.3"
 services:
-  db:
+  test_db:
     image: postgres:15-alpine
-    volumes:
-      - app-db-data:/var/lib/postgresql/data/pgdata
     env_file:
       - .env
     environment:
-      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_DB=$TEST_DATABASE_NAME
 
   backend:
     depends_on:
-      - db
+      - test_db
+    command: ['bash', 'scripts/test.sh']
     env_file:
       - .env
     environment:
-      - POSTGRES_SERVER=db
-    ports:
-      - "5000:5000"
+      - POSTGRES_SERVER=test_db
     build:
+      args:
+        - INSTALL_DEV=true
       context: .
       dockerfile: Dockerfile
 
 
-volumes:
-  app-db-data:
 
