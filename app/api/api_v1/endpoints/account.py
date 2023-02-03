@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from fastapi import Depends
+from fastapi import Path
 from fastapi_pagination import LimitOffsetPage
 from sqlalchemy.orm import Session
 
@@ -31,7 +32,7 @@ def get_all_accounts(
 
 @router.get("/{account_id}", responses=crud.account.not_found_resp)
 def get_particular_account(
-    account_id: int, db: Session = Depends(deps.get_db)
+    account_id: int = Path(ge=0), db: Session = Depends(deps.get_db)
 ) -> schemas.AccountOut:
     account = crud.account.get(db, account_id)
 

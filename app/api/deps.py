@@ -22,6 +22,23 @@ def get_db() -> Generator:
         db.close()
 
 
+def get_db_serialized() -> Generator:
+    db = SessionLocal()
+    default_isolation = db.connection().default_isolation_level
+
+    # throws exception OperationalError on concurrent update
+    db.execute("SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;")
+    try:
+        yield db
+    except Exception:
+        db.rollback()
+        raise
+    finally:
+        db.close()
+        # throws exception OperationalError on concurrent update
+        db.execute(f"SET TRANSACTION ISOLATION LEVEL {default_isolation};")
+
+
 def get_current_employee(
     db: Session = Depends(get_db),
     token_data: schemas.TokenPayload = Depends(JWTBearer()),

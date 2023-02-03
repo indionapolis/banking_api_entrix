@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+export PYTHONPATH=.
 set -e
 set -x
 # lint

@@ -7,7 +7,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app import crud
-from app.api.deps import get_db
+from app.api import deps
 from app.core.config import settings
 from app.db.base_class import Base
 from app.db.init_db import init_db
@@ -21,7 +21,7 @@ engine = create_engine(settings.TEST_DATABASE_URI, pool_pre_ping=True)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="module")
 def db() -> Generator:
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
@@ -36,12 +36,13 @@ def db() -> Generator:
     Base.metadata.drop_all(bind=engine)
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="module")
 def client(db) -> Generator:
     def override_get_db():
         yield db
 
-    app.dependency_overrides[get_db] = override_get_db
+    app.dependency_overrides[deps.get_db] = override_get_db
+    app.dependency_overrides[deps.get_db_serialized] = override_get_db
     init_db(db)
 
     yield TestClient(app)

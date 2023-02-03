@@ -7,6 +7,7 @@ from alembic import context
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
+from app.core.config import settings
 from app.db.base import Base  # noqa
 
 # this is the Alembic Config object, which provides
@@ -26,6 +27,7 @@ fileConfig(config.config_file_name)
 
 target_metadata = Base.metadata
 
+
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
@@ -33,11 +35,7 @@ target_metadata = Base.metadata
 
 
 def get_url():
-    user = os.getenv("POSTGRES_USER", "postgres")
-    password = os.getenv("POSTGRES_PASSWORD", "")
-    server = os.getenv("POSTGRES_SERVER", "db")
-    db = os.getenv("POSTGRES_DB", "app")
-    return f"postgresql://{user}:{password}@{server}/{db}"
+    return settings.SQLALCHEMY_DATABASE_URI
 
 
 def run_migrations_offline():

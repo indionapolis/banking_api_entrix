@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi_pagination import add_pagination
+from sqlalchemy.exc import OperationalError
 from starlette.middleware.cors import CORSMiddleware
+from starlette.responses import JSONResponse
 
 from app.api.api_v1.api_router import api_router
 from app.core.config import settings
@@ -26,3 +28,11 @@ if settings.BACKEND_CORS_ORIGINS:
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
 add_pagination(app)
+
+
+@app.exception_handler(OperationalError)
+def db_exception_handler(request, exc):
+    return JSONResponse(
+        status_code=423,
+        content={"detail": "Try again later."},
+    )

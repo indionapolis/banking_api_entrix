@@ -58,7 +58,7 @@ def test_get_account(
 
 def test_get_account_404(client: TestClient, employee_token_headers) -> None:
     r = client.get(
-        f"{settings.API_V1_STR}/account/{-1}/", headers=employee_token_headers
+        f"{settings.API_V1_STR}/account/{10000}/", headers=employee_token_headers
     )
 
     assert r.status_code == 404

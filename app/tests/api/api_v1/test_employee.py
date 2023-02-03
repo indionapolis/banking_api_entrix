@@ -6,7 +6,7 @@ from app.core.config import settings
 
 def test_get_access_token(client: TestClient) -> None:
     login_data = {
-        "email": settings.FIRST_EMPLOYEE,
+        "email": settings.FIRST_EMPLOYEE_EMAIL,
         "password": settings.FIRST_EMPLOYEE_PASSWORD,
     }
     r = client.post(f"{settings.API_V1_STR}/employee/access-token", data=login_data)

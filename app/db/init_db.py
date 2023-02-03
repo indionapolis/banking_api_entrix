@@ -20,10 +20,10 @@ ini_customers = [
 
 
 def init_db(db: Session) -> None:
-    employee = crud.employee.get_by_email(db, email=settings.FIRST_EMPLOYEE)
+    employee = crud.employee.get_by_email(db, email=settings.FIRST_EMPLOYEE_EMAIL)
     if not employee:
         employee_in = schemas.EmployeeCreate(
-            email=settings.FIRST_EMPLOYEE,
+            email=settings.FIRST_EMPLOYEE_EMAIL,
             password=settings.FIRST_EMPLOYEE_PASSWORD,
             full_name="Tom",
             is_superuser=True,

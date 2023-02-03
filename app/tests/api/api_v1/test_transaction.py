@@ -82,3 +82,22 @@ def test_post_transaction_two_customers_not_enough_money(
 
     assert r.status_code == 400
     assert result["detail"] == "Insufficient funds for transfer"
+
+
+def test_post_transaction_self_customer(
+    client: TestClient, employee_token_headers, db, account_1_1
+) -> None:
+    transaction_data = {
+        "from_account_id": account_1_1.id,
+        "to_account_id": account_1_1.id,
+        "amount": 100,
+    }
+    r = client.post(
+        f"{settings.API_V1_STR}/transaction/",
+        json=transaction_data,
+        headers=employee_token_headers,
+    )
+    result = r.json()
+
+    assert r.status_code == 422
+    assert result["detail"][0]["msg"] == "Can't transfer within same account"

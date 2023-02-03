@@ -29,7 +29,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
                 "content": {
                     "application/json": {
                         "example": {
-                            "detail": f"{self.model.__name__} (id=<id>) not found!"
+                            "detail": f"{self.model.__name__} (id=<id>) not found"
                         }
                     }
                 },
@@ -52,7 +52,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         if not obj:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"{self.model.__name__} (id={id}) not found!",
+                detail=f"{self.model.__name__} (id={id}) not found",
             )
         return obj
 

@@ -1,3 +1,4 @@
+import logging
 from typing import Any
 
 from fastapi import APIRouter
@@ -12,6 +13,8 @@ from app.api import deps
 from app.models import History
 
 router = APIRouter()
+
+logger = logging.getLogger()
 
 
 @router.post(
@@ -30,10 +33,14 @@ router = APIRouter()
                 }
             },
         },
+        status.HTTP_423_LOCKED: {
+            "description": "Denies concurrent update on transaction",
+            "content": {"application/json": {"example": {"detail": "Try again later"}}},
+        },
     },
 )
 def make_new_transaction(
-    transaction: schemas.Transaction, db: Session = Depends(deps.get_db)
+    transaction: schemas.Transaction, db: Session = Depends(deps.get_db_serialized)
 ) -> Any:
     from_account = crud.account.get(db, transaction.from_account_id)
     to_account = crud.account.get(db, transaction.to_account_id)
@@ -65,5 +72,10 @@ def make_new_transaction(
     db.add(from_account)
     db.add(to_account)
     db.commit()
+
+    logger.info(
+        f"New transfer successfully completed: "
+        f"({from_account.id} -({transaction.amount})> {to_account.id})"
+    )
 
     return {"msg": "success"}

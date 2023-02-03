@@ -168,7 +168,7 @@ pyflakes = ">=1.1.0"
 name = "bcrypt"
 version = "4.0.1"
 description = "Modern password hashing for your software and your servers"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -1231,7 +1231,7 @@ files = [
 name = "passlib"
 version = "1.7.4"
 description = "comprehensive password hashing framework supporting over 30 schemes"
-category = "dev"
+category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -2290,4 +2290,4 @@ standard = ["colorama (>=0.4)", "httptools (>=0.5.0)", "python-dotenv (>=0.13)",
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "ad87dfaddaaef00932c0a439b77f9bd9a900bc20fe096f3cb012655dacc4722a"
+content-hash = "4d93151d748107905d5bf69535d9d48c95029c9c52bdceb82ed341882d6cfc00"

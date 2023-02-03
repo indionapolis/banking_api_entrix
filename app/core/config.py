@@ -64,7 +64,7 @@ class Settings(BaseSettings):
             path=f"/{path or ''}",
         )
 
-    FIRST_EMPLOYEE: EmailStr
+    FIRST_EMPLOYEE_EMAIL: EmailStr
     FIRST_EMPLOYEE_PASSWORD: str
 
     class Config:

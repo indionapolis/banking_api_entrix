@@ -17,7 +17,7 @@ def random_email() -> str:
 
 def get_employee_token_headers(client: TestClient) -> Dict[str, str]:
     login_data = {
-        "email": settings.FIRST_EMPLOYEE,
+        "email": settings.FIRST_EMPLOYEE_EMAIL,
         "password": settings.FIRST_EMPLOYEE_PASSWORD,
     }
     r = client.post(f"{settings.API_V1_STR}/employee/access-token", data=login_data)

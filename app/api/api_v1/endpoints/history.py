@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from fastapi import Depends
+from fastapi import Path
 from fastapi_pagination import LimitOffsetPage
 from sqlalchemy.orm import Session
 
@@ -21,13 +22,13 @@ def get_all_history(
 
 @router.get("/customer/{customer_id}")
 def get_customer_history(
-    customer_id: int, db: Session = Depends(deps.get_db)
+    customer_id: int = Path(ge=0), db: Session = Depends(deps.get_db)
 ) -> LimitOffsetPage[schemas.HistoryOut]:
     return crud.history.filter_customer(db, customer_id)
 
 
 @router.get("/account/{account_id}")
 def get_account_history(
-    account_id: int, db: Session = Depends(deps.get_db)
+    account_id: int = Path(ge=0), db: Session = Depends(deps.get_db)
 ) -> LimitOffsetPage[schemas.HistoryOut]:
     return crud.history.filter_account(db, account_id)

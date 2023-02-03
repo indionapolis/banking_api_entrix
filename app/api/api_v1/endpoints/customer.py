@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from fastapi import Depends
+from fastapi import Path
 from fastapi_pagination import LimitOffsetPage
 from sqlalchemy.orm import Session
 
@@ -30,7 +31,7 @@ def get_all_customers(
 
 @router.get("/{customer_id}", responses=crud.customer.not_found_resp)
 def get_particular_customer(
-    customer_id: int, db: Session = Depends(deps.get_db)
+    customer_id: int = Path(ge=0), db: Session = Depends(deps.get_db)
 ) -> schemas.CustomerOut:
     customer = crud.customer.get(db, customer_id)
 
@@ -39,7 +40,9 @@ def get_particular_customer(
 
 @router.put("/{customer_id}", responses=crud.customer.not_found_resp)
 def update_customer(
-    customer_id: int, customer: schemas.InCustomer, db: Session = Depends(deps.get_db)
+    customer: schemas.InCustomer,
+    customer_id: int = Path(ge=0),
+    db: Session = Depends(deps.get_db),
 ) -> schemas.CustomerOut:
     old_customer = crud.customer.get(db, customer_id)
 

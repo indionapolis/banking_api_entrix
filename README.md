@@ -56,7 +56,7 @@ You are expected to design any other required models and routes for your API.
 - Testing: is the system adequately tested?
 - Documentation: is the API well-documented?
 
-# Bank API
+# Bank API backend
 
 ## Backend Requirements
 
@@ -70,15 +70,65 @@ The `.env` file is the one that contains configurations, generated keys and pass
 
 The file should be in the root of the project, you can use `.env-sample` file as a template.
 
-### Run test
+### Run tests
 
-self contained command
+To run tests using docker-compose use following self-contained command:
 
 ```bash
-docker-compose -f docker-compose.test.yml up --abort-on-container-exit
+# requires .env file
+docker-compose -f docker-compose.test.yml up --abort-on-container-exit --remove-orphans
+```
+
+To run tests locally:
+
+```bash
+poetry install --no-root
+# requires test postgres instance and .env file
+sh scripts/test.sh
 ```
 
 ### Start the project
 
-migrate 
-poetry run alembic upgrade head
+You can start API server and db instance using docker-compose with the following self-contained command:
+
+```bash
+docker-compose up --remove-orphans
+```
+The server will appear at http://0.0.0.0:5000
+
+to start server locally:
+
+```bash
+poetry install --no-root --no-dev
+# requires test postgres instance and .env file
+sh scripts/entry_point.sh
+```
+
+### Migrations
+
+Project uses `SQLAlchemy` as ORM and `alembic` for migration automation.
+
+To install the latest migration, simply run:
+
+```bash
+PYTHONPATH=. poetry run alembic upgrade head
+```
+
+### API documentation
+
+![](src/API_preview.png)
+
+You can use http://0.0.0.0:5000/docs or http://0.0.0.0:5000/redoc to access full spec Open API interactive documentation. 
+
+You can access json formatted API schema via http://0.0.0.0:5000/api/v1/openapi.json
+
+
+### Security
+
+The api backend requires JWT Bearer token in request header to authorize access to the methods. The database is populated with initial employee on the first start of the server. Use `FIRST_EMPLOYEE` and `FIRST_EMPLOYEE_EMAIL` to get access token via `/api/v1/employee/access-token`. Then you can set token for access using green **Authorize** button in interactive documentation.  
+
+
+
+### End note
+
+If you have any questions you can contact me on telegram @indionapolis
