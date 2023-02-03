@@ -58,6 +58,13 @@ You are expected to design any other required models and routes for your API.
 
 # Bank API backend
 
+Try out live documentation [**here**](http://159.223.168.75:5000/docs) !
+
+```bash
+# decode base64 to get credentials for employee
+eyJlbXBsb3llZV9lbWFpbCI6ICJ0ZXN0QGJhbmsuY29tIiwgImVtcGxveWVlX3Bhc3N3b3JkIjogIjA3OWFhODljMjAzYyJ9
+```
+
 ## Backend Requirements
 
 * [Docker](https://www.docker.com/).
